@@ -19,10 +19,10 @@ def find_word(line):
             return line[:step]
     return line
 
-def text_to_bits(text, encoding='utf-16', errors='surrogatepass'):
+def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
     bits = bin(int.from_bytes(text.encode(encoding, errors), 'big'))[2:]
     return bits.zfill(8 * ((len(bits) + 7) // 8))
-def text_from_bits(bits, encoding='utf-16', errors='surrogatepass'):
+def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
     n = int(bits, 2)
     return n.to_bytes((n.bit_length() + 7) // 8, 'big').decode(encoding, errors) or '\0'
 
@@ -50,6 +50,7 @@ def hide_text():
             k = k + 1
             draw.point((i, j), (a, b, c))
     image.save(addres1.get(), "PNG")
+    del draw
 
 def find_text():
     image1 = Image.open(addres2.get())
@@ -57,7 +58,7 @@ def find_text():
     height1 = image1.size[1]
     pix = image1.load()
     word1 = str('')
-    for i in range(int(width1/2)):
+    for i in range(int(width1)):
         for j in range(height1):
             c = pix[i, j][2]
             c1 = c % 2
@@ -68,7 +69,7 @@ def find_text():
 
 
 window.title("Это приложение прячет ваше слово в изображении так, что вы ее не найдете")
-window.geometry('130000x500')
+window.geometry('1100x500')
 lbl = Label(window, text="Введите адрес изображения, в которое нужно спрятать слово(расширение изображения .png). Пример: C:\\Users\\raush\Downloads\\404.png")
 lbl.grid(column=0, row=0)
 addres = Entry(window, width=45)
